@@ -5,6 +5,7 @@ public class Pedido {
     private ArrayList<LineaPedido> detalles;
 
     public Pedido() {
+        this.detalles = new ArrayList<>();
     }
 
     public double obtenerTotal() {

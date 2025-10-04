@@ -36,4 +36,13 @@ public class LineaPedido {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
+
+    @Override
+    public String toString() {
+        return "LineaPedido{" +
+                "producto=" + producto +
+                ", cantidad=" + cantidad +
+                ", precio=" + precio +
+                '}';
+    }
 }

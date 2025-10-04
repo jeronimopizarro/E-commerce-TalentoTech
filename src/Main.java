@@ -6,6 +6,7 @@ public class Main {
         int opcionElegida = 0;
         Scanner scanner = new Scanner(System.in);
         ArrayList<Producto> productos = new ArrayList<>();
+        ArrayList<Pedido> pedidos = new ArrayList<>();
         final int SALIR = 7;
 
         do {
@@ -30,19 +31,19 @@ public class Main {
                     break;
                 case 4:
                     Producto productoAEliminar = obtenerProductoPorId(scanner, productos);
+
                     verificarEliminacion(productoAEliminar, scanner, productos);
                     break;
                 case 5: //Crear un pedido
-                    crearPedido(productos, scanner);
+                    Pedido pedido = crearPedido(productos, scanner);
+                    pedidos.add(pedido);
                     break;
                 case 6: //Listar pedidos
+                    listarPedidos(pedidos);
                     break;
-
             }
         } while (opcionElegida != SALIR);
-
     }
-
     private static int ElegirOpcionMenuPrincipal(Scanner scanner) {
         int opcionElegida;
         System.out.println("Elija la opcion que desea ejecutar:");
@@ -183,7 +184,7 @@ public class Main {
         }
     }
 
-    private static void crearPedido(ArrayList<Producto> productos, Scanner scanner) {
+    private static Pedido crearPedido(ArrayList<Producto> productos, Scanner scanner) {
         Pedido pedido = new Pedido();
         String continuar = "";
 
@@ -216,7 +217,26 @@ public class Main {
         } while (continuar.equalsIgnoreCase("s"));
 
         System.out.println("Pedido creado correctamente. Total: $" + pedido.obtenerTotal());
+        return pedido;
     }
 
-
+    private static void listarPedidos(ArrayList<Pedido> pedidos) {
+        if (pedidos.isEmpty()) {
+            System.out.println("No hay pedidos realizados.");
+            return;
+        }
+        //chatgpt le puso estilos, si no lo dejaba con el toString de las clases, asi esta más lindo
+        for (int i = 0; i < pedidos.size(); i++) {
+            Pedido pedido = pedidos.get(i);
+            System.out.println("Pedido #" + (i + 1));
+            for (LineaPedido linea : pedido.getDetalles()) {
+                System.out.println("Producto: " + linea.getProducto().getNombre() +
+                        " | Cantidad: " + linea.getCantidad() +
+                        " | Precio unitario: $" + linea.getPrecio() +
+                        " | Subtotal: $" + linea.calcularSubtotal());
+            }
+            System.out.println("Total del pedido: $" + pedido.obtenerTotal());
+            System.out.println("-------------------------");
+        }
+    }
 }
